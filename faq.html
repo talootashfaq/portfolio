@@ -170,8 +170,23 @@ body[data-theme=light] .footer-profile p,body[data-theme=light] .footer-pages h3
     document.addEventListener('DOMContentLoaded',()=>{const old=document.querySelector('.theme-toggle');if(!old)return;const button=old.cloneNode(false);button.innerHTML='<svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42 1.42"/></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/></svg>';old.replaceWith(button);const sun=button.querySelector('.sun-icon'),moon=button.querySelector('.moon-icon');const setTheme=value=>{document.body.dataset.theme=value;sun.style.display=value==='light'?'none':'block';moon.style.display=value==='light'?'block':'none';button.setAttribute('aria-label',value==='light'?'Switch to dark mode':'Switch to light mode');button.title=value==='light'?'Switch to dark mode':'Switch to light mode';localStorage.setItem('portfolio-theme',value)};setTheme(localStorage.getItem('portfolio-theme')||document.body.dataset.theme||'dark');button.addEventListener('click',()=>setTheme(document.body.dataset.theme==='light'?'dark':'light'))});
   </script>
 <style id="site-section-spacing">
-  main>section:not(.hero):not(.page-hero),main>section#contact.section{padding-top:100px!important;padding-bottom:0!important}
-  @media(max-width:800px){main>section:not(.hero):not(.page-hero),main>section#contact.section{padding-top:40px!important;padding-bottom:0!important}}
+  /* FAQ hero: remove bottom spacing */
+  main>section.page-hero{padding-bottom:0!important}
+
+  /* FAQ content section: keep existing top spacing, remove bottom spacing
+     so the CTA's own spacing can control the layout */
+  main>section.content-section{padding-bottom:0!important}
+
+  /* Still have a question? CTA: desktop spacing */
+  main .faq-cta{margin-top:100px!important;margin-bottom:80px!important}
+
+  @media(max-width:800px){
+    /* FAQ hero remains flush at the bottom on mobile */
+    main>section.page-hero{padding-bottom:0!important}
+
+    /* Mobile CTA spacing */
+    main .faq-cta{margin-top:40px!important;margin-bottom:30px!important}
+  }
 </style>
 <style id="mobile-content-buttons">
   @media(max-width:800px){
