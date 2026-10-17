@@ -45,8 +45,21 @@ body[data-theme=light] .footer-profile p,body[data-theme=light] .footer-pages h3
 .contact .button:hover,.contact .button:focus-visible{background:linear-gradient(110deg,#ad50dd 0%,#583be9 100%);color:#fff;transform:translateY(-2px);box-shadow:0 8px 24px rgba(117,50,208,.28)}
 </style>
 <style id="site-section-spacing">
-  main>section:not(.hero):not(.page-hero),main>section#contact.section{padding-top:100px!important;padding-bottom:0!important}
-  @media(max-width:800px){main>section:not(.hero):not(.page-hero),main>section#contact.section{padding-top:40px!important;padding-bottom:0!important}}
+  /* Services hero: zero bottom spacing */
+  main>section.page-hero{padding-bottom:0!important}
+
+  /* CTA section: 80px bottom spacing on desktop */
+  main>section#contact.section{padding-top:100px!important;padding-bottom:80px!important}
+
+  /* Preserve spacing for other content sections */
+  main>section:not(.hero):not(.page-hero):not(#contact.section){padding-top:100px!important;padding-bottom:0!important}
+
+  /* Mobile: CTA section bottom spacing is 30px */
+  @media(max-width:800px){
+    main>section:not(.hero):not(.page-hero):not(#contact.section){padding-top:40px!important;padding-bottom:0!important}
+    main>section#contact.section{padding-top:40px!important;padding-bottom:30px!important}
+    main>section.page-hero{padding-bottom:0!important}
+  }
 </style>
 <style id="mobile-content-buttons">
   @media(max-width:800px){main .button,main .button-secondary{display:flex!important;width:100%!important;max-width:none!important;min-height:48px!important;box-sizing:border-box;justify-content:center;margin-inline:0!important}}
