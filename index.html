@@ -105,10 +105,175 @@
     .project-image{border-radius:var(--radius) var(--radius) 0 0}.project-link{gap:7px}.project-arrow{width:11px;height:11px;display:inline-block;object-fit:contain;filter:brightness(0) saturate(100%) invert(25%) sepia(73%) saturate(3674%) hue-rotate(254deg) brightness(91%) contrast(91%)}
 
     #about{padding-top:0}
+    .more-link{display:inline-flex;align-items:center;gap:4px;margin-top:24px;color:#7532D0;font-weight:800;font-size:14px}.faq-list{border-top:1px solid #41414d}.faq-list details{border-bottom:1px solid #41414d;padding:19px 2px}.faq-list summary{cursor:pointer;list-style:none;font:500 17px/1.4 'Poppins',sans-serif;color:var(--ink)}.faq-list summary::-webkit-details-marker{display:none}.faq-list summary::after{content:'+';float:right;color:#7532D0;font:400 22px/1 'Nunito',sans-serif}.faq-list details[open] summary::after{content:'−'}.faq-list p{color:#bbb7c4;max-width:780px;margin:13px 30px 0 0}.home-faq{padding-top:40px}body[data-theme="light"] .faq-list,body[data-theme="light"] .faq-list details{border-color:#e9e5e7}body[data-theme="light"] .faq-list p{color:#7B6F72}
+    html{overflow-x:clip}.brand{display:inline-flex;align-items:center;gap:12px;min-width:0}.brand-mark{display:block;width:42px;height:42px;flex:none}.brand-full{display:inline;white-space:nowrap}.brand-mobile{display:none}
+    @media(max-width:560px){.brand{gap:0}.brand-mark{width:40px;height:40px}.brand-full,.brand-mobile{display:none}}
+  </style>
+<style>
+.mobile-menu-toggle{display:none}
+.nav-mobile-contact{display:none}
+@media(max-width:800px){
+  .nav{position:relative;flex-wrap:nowrap!important;height:70px!important;min-height:70px!important;padding:0!important;gap:10px!important}
+  .nav-actions{margin-left:auto;gap:8px!important;flex:none}
+  .nav-actions .nav-cta{display:none!important}
+  .mobile-menu-toggle{width:42px;height:42px;display:grid;place-items:center;border:1px solid #555563;border-radius:14px;background:rgba(25,26,29,.78);color:#f2eff7;cursor:pointer;transition:background .2s,border-color .2s,transform .2s}
+  .mobile-menu-toggle:hover{border-color:#7532D0;background:rgba(117,50,208,.16)}
+  .mobile-menu-toggle svg{width:21px;height:21px;display:block}
+  .navlinks{display:flex!important;position:absolute;z-index:60;top:calc(100% + 10px);right:0;width:min(320px,calc(100vw - 32px));margin:0!important;padding:10px!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:4px!important;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:rgba(27,27,35,.78);box-shadow:0 22px 60px rgba(0,0,0,.38);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);transform:translateY(-14px) scale(.98);transform-origin:top right;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,transform .28s cubic-bezier(.2,.8,.2,1),visibility .22s}
+  .navlinks.is-open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1)}
+  .navlinks a{display:block;padding:13px 14px;border-radius:12px;color:#eeeaf4;font-size:15px}
+  .navlinks a:hover,.navlinks a:focus-visible{background:rgba(117,50,208,.2);color:#fff}
+  .navlinks .nav-mobile-contact{display:block;border-top:1px solid rgba(255,255,255,.15);margin-top:4px;padding-top:16px}
+  body[data-theme="light"] .mobile-menu-toggle{background:rgba(255,255,255,.82);color:#24212a;border-color:#ded8e2}
+  body[data-theme="light"] .navlinks{background:rgba(255,255,255,.78);border-color:rgba(20,20,25,.12)}
+  body[data-theme="light"] .navlinks a{color:#201c25}
+  body[data-theme="light"] .navlinks a:hover,body[data-theme="light"] .navlinks a:focus-visible{background:rgba(117,50,208,.12);color:#4023D7}
+  body[data-theme="light"] .navlinks .nav-mobile-contact{border-color:rgba(20,20,25,.12)}
+}
+@media(prefers-reduced-motion:reduce){.navlinks,.mobile-menu-toggle{transition:none!important}}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(document.getElementById('themeToggle'))return;
+  document.querySelectorAll('.nav').forEach((bar,index)=>{
+    const links=bar.querySelector('.navlinks');
+    if(!links)return;
+    links.id=links.id||'mobileMenuLinks'+index;
+    const items=links.querySelectorAll('a');
+    if(items[0])items[0].textContent='About Us';
+    if(items[1])items[1].href='portfolio.html';
+    if(items[2])items[2].href='services.html';
+    if(items[3])items[3].textContent='FAQs';
+    if(!links.querySelector('.nav-mobile-contact')){
+      const contact=document.createElement('a');
+      contact.href='contact.html';contact.className='nav-mobile-contact';contact.textContent='Contact Us';
+      links.appendChild(contact);
+    }
+    const actions=bar.querySelector('.nav-actions');
+    const toggle=document.createElement('button');
+    toggle.type='button';toggle.className='mobile-menu-toggle';toggle.setAttribute('aria-controls',links.id);toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open menu');
+    const menuIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
+    const closeIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></svg>';
+    toggle.innerHTML=menuIcon;actions.insertBefore(toggle,actions.querySelector('.nav-cta'));
+    const setOpen=open=>{
+      links.classList.toggle('is-open',open);
+      bar.closest('.nav-shell').classList.toggle('menu-open',open);
+      toggle.classList.toggle('is-open',open);
+      document.body.classList.toggle('mobile-menu-open',open);
+      toggle.setAttribute('aria-expanded',String(open));
+      toggle.setAttribute('aria-label',open?'Close menu':'Open menu');
+      toggle.innerHTML=open?closeIcon:menuIcon;
+    };
+    toggle.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();setOpen(toggle.getAttribute('aria-expanded')!=='true')});
+    links.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>setOpen(false)));
+    document.addEventListener('keydown',event=>{if(event.key==='Escape')setOpen(false)});
+    document.addEventListener('click',event=>{if(!bar.contains(event.target))setOpen(false)});
+  });
+});
+</script>
+<style>
+@media(max-width:800px){
+  body.mobile-menu-open{overflow:hidden}
+  .nav-shell.menu-open{background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-color:transparent!important}
+  .navlinks{position:fixed!important;inset:0!important;top:0!important;right:0!important;width:100vw!important;max-width:none!important;height:100vh;height:100dvh;min-height:100vh;margin:0!important;padding:clamp(100px,18vh,170px) 28px 54px!important;justify-content:center!important;align-items:stretch!important;gap:10px!important;overflow-y:auto;overscroll-behavior:contain;border:0!important;border-radius:0!important;background:rgba(15,16,19,.68)!important;box-shadow:none!important;backdrop-filter:blur(38px) saturate(145%)!important;-webkit-backdrop-filter:blur(38px) saturate(145%)!important;transform:translateY(-100%)!important;opacity:0;visibility:hidden;pointer-events:none;transition:transform .42s cubic-bezier(.22,.8,.25,1),opacity .3s ease,visibility .42s!important}
+  .navlinks::before{content:'MENU';display:block;margin:0 auto 14px;color:#b6a5ca;font:800 11px/1 'Nunito',sans-serif;letter-spacing:.2em;text-align:center}
+  .navlinks.is-open{transform:translateY(0)!important;opacity:1;visibility:visible;pointer-events:auto}
+  .navlinks a{width:min(100%,520px);margin-inline:auto;padding:13px 8px!important;border-radius:12px!important;background:transparent!important;color:#f2eff7!important;font:500 clamp(26px,7vw,38px)/1.25 'Poppins',sans-serif!important;text-align:center}
+  .navlinks a:hover,.navlinks a:focus-visible{color:#c795ff!important}
+  .navlinks .nav-mobile-contact{margin:8px auto 0!important;padding:18px 8px 13px!important;border-top:1px solid rgba(255,255,255,.24)!important}
+  .mobile-menu-toggle.is-open{position:fixed;top:16px;right:16px;z-index:1002;width:48px;height:48px;border-color:rgba(255,255,255,.32);background:rgba(25,24,32,.62);color:#fff;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  body[data-theme="light"] .navlinks{background:rgba(255,255,255,.68)!important}
+  body[data-theme="light"] .navlinks::before{color:#72548a}
+  body[data-theme="light"] .navlinks a{color:#17131c!important}
+  body[data-theme="light"] .navlinks a:hover,body[data-theme="light"] .navlinks a:focus-visible{color:#7131D0!important}
+  body[data-theme="light"] .navlinks .nav-mobile-contact{border-color:rgba(30,20,40,.2)!important}
+  body[data-theme="light"] .mobile-menu-toggle.is-open{background:rgba(255,255,255,.76);color:#17131c;border-color:rgba(30,20,40,.22)}
+}
+</style>
+<style>
+@media(max-width:800px){
+ .mobile-menu-toggle{width:48px!important;height:48px!important;border:0!important;background:transparent!important;box-shadow:none!important}
+ .mobile-menu-toggle svg{width:28px!important;height:28px!important}
+ .mobile-menu-toggle.is-open{border:0!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+ .navlinks .nav-mobile-contact{display:flex!important;align-items:center;justify-content:center;width:min(100%,320px)!important;margin:22px auto 0!important;padding:16px 24px!important;border:0!important;border-radius:999px!important;background:linear-gradient(110deg,#983BCB 0%,#4023D7 100%)!important;color:#fff!important;font:700 16px/1.2 'Nunito',sans-serif!important;text-align:center;box-shadow:0 10px 30px rgba(117,50,208,.26)}
+ .navlinks .nav-mobile-contact:hover,.navlinks .nav-mobile-contact:focus-visible{background:linear-gradient(110deg,#ad50dd 0%,#583be9 100%)!important;color:#fff!important}
+}
+</style>
+<style>
+@media(max-width:800px){
+ .mobile-menu-toggle{position:relative!important;z-index:1003!important;display:grid!important;place-items:center!important;flex:0 0 56px!important;width:56px!important;height:56px!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;pointer-events:auto!important;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+ .mobile-menu-toggle svg{width:30px!important;height:30px!important;pointer-events:none}
+ .mobile-menu-toggle.is-open{position:fixed!important;top:14px!important;right:14px!important;z-index:1003!important;flex:none!important;width:56px!important;height:56px!important}
+ .navlinks:not(.is-open){pointer-events:none!important}
+}
+</style>
+<style>.button-secondary{display:inline-flex;align-items:center;justify-content:center;gap:9px;margin-top:18px;padding:11px 17px;border:1px solid transparent;border-radius:999px;background:linear-gradient(#0F1013,#0F1013) padding-box,linear-gradient(110deg,#983BCB,#4023D7) border-box;color:#fff;font:700 14px 'Nunito',sans-serif;transition:transform .2s,box-shadow .2s}.button-secondary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(117,50,208,.2)}body[data-theme="light"] .button-secondary{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(110deg,#983BCB,#4023D7) border-box;color:#22152e}</style>
+<script>document.addEventListener('DOMContentLoaded',()=>{const nav=document.querySelectorAll('.navlinks a');nav.forEach(a=>{const label=a.textContent.trim();if(label==='Portfolio')a.href='portfolio.html';if(label==='Services')a.href='services.html'});const items=[['#work','View All Portfolio','portfolio.html'],['#services','View All Services','services.html'],['#faq','View All FAQs','faq.html']];items.forEach(([section,label,url])=>{const heading=document.querySelector(section+' .section-head h2');if(heading&&!heading.parentElement.querySelector('.button-secondary')){const button=document.createElement('a');button.className='button-secondary';button.href=url;button.innerHTML=label+' <img class="btn-arrow" src="right-arrow.svg" alt="">';const header=heading.closest('.section-head');const group=header.firstElementChild;const intro=header.querySelector('.section-intro');if(intro&&intro.parentElement!==group)group.append(intro);header.append(button)}if(section==='#faq'){const oldFaqLink=document.querySelector('#faq > .more-link');if(oldFaqLink)oldFaqLink.remove()}});const aboutHeading=document.querySelector('#about .about-grid>div:first-child h2');const aboutButton=document.querySelector('#about .more-link');if(aboutHeading&&aboutButton){aboutButton.className='button-secondary';aboutHeading.insertAdjacentElement('afterend',aboutButton)}document.querySelectorAll('.faq-list details').forEach(card=>{const summary=card.querySelector('summary');const answer=document.createElement('div');answer.className='faq-answer';let next=summary.nextElementSibling;while(next){const following=next.nextElementSibling;answer.append(next);next=following}card.append(answer);if(card.open)answer.style.height='auto';const toggle=()=>{if(card.open){answer.style.height=answer.scrollHeight+'px';requestAnimationFrame(()=>{answer.style.height='0px'});answer.addEventListener('transitionend',function close(){answer.removeEventListener('transitionend',close);card.open=false;answer.style.height=''},{once:true})}else{card.open=true;answer.style.height='0px';requestAnimationFrame(()=>{answer.style.height=answer.scrollHeight+'px'});answer.addEventListener('transitionend',function open(){answer.removeEventListener('transitionend',open);answer.style.height='auto'},{once:true})}};summary.addEventListener('click',event=>{event.preventDefault();toggle()});card.addEventListener('click',event=>{if(!event.target.closest('summary'))toggle()})})});</script>
+<style>
+.section-head{align-items:center}
+.section-head>div:first-child{flex:1;min-width:0}
+.section-head .section-intro{margin-top:14px;max-width:560px}
+.section-head>.button-secondary{flex:0 0 auto;align-self:center;margin:0 0 0 20px}
+#about .about-grid>div:first-child>.button-secondary{margin-top:22px}
+.button-secondary .btn-arrow{width:14px;height:14px;margin-left:2px}
+@media(max-width:800px){.section-head{display:flex;align-items:flex-start;gap:16px}.section-head>.button-secondary{margin:4px 0 0 12px}.section-head .section-intro{margin-top:12px}#about .about-grid>div:first-child>.button-secondary{margin-top:18px}}
+@media(max-width:560px){.section-head{gap:12px}.section-head>.button-secondary{padding:9px 11px;font-size:12px;white-space:nowrap}.section-head .section-intro{font-size:14px}}
+</style>
+<style>
+.faq-list{display:grid;gap:12px;border:0!important}
+.faq-list details{padding:17px 18px!important;border:1px solid #34353e!important;border-radius:18px;background:#17181c;transition:border-color .2s ease,background .2s ease,transform .2s ease}
+.faq-list details:hover{border-color:#7131D0!important;transform:translateY(-1px)}
+.faq-list details[open]{border-color:rgba(113,49,208,.72)!important;background:#1c1922}
+.faq-list summary{display:flex;align-items:center;justify-content:space-between;gap:18px;cursor:pointer;list-style:none}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary::after{content:'+';float:none!important;display:block;flex:0 0 auto;width:auto;height:auto;border:0;border-radius:0;background:transparent;color:#fff;font:500 28px/.9 'Nunito',sans-serif;transition:color .2s ease,transform .25s ease}
+.faq-list details[open] summary::after{content:'−';color:#C150F6;transform:rotate(180deg)}
+.faq-answer{height:0;overflow:hidden;transition:height .38s cubic-bezier(.22,1,.36,1)}
+.faq-list p{margin:13px 52px 2px 0;max-width:780px;color:#bbb7c4}
+body[data-theme="light"] .faq-list details{background:#fff;border-color:#e9e5e7!important}
+body[data-theme="light"] .faq-list details[open]{background:#faf7ff;border-color:#c7a6e6!important}
+body[data-theme="light"] .faq-list summary::after{background:transparent;border:0;color:#fff}
+body[data-theme="light"] .faq-list details[open] summary::after{background:transparent;border:0;color:#C150F6}
+@media(max-width:560px){.faq-list{gap:10px}.faq-list details{padding:14px!important;border-radius:15px}.faq-list summary{gap:12px;font-size:15px}.faq-list summary::after{font-size:26px}.faq-list p{margin:11px 42px 1px 0;font-size:14px}}
+</style>
+<style>
+.site-footer{--footer-icon-bg:var(--paper, #0F1013);--footer-line:#30313a;margin-top:28px;border-top:1px solid var(--footer-line);background:rgba(18,18,23,.55);color:var(--text,var(--ink,#f2eff7))}
+.footer-main{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(130px,.65fr) minmax(190px,.8fr);gap:56px;padding:54px 0 48px}
+.footer-logo{display:inline-flex;align-items:center;gap:11px;font-size:16px;font-weight:800;letter-spacing:-.04em;color:#fff}.footer-logo img{width:42px;height:42px;object-fit:contain}.footer-logo em{font-style:normal;color:#7532D0}
+.footer-profile h2{max-width:380px;margin:22px 0 10px;font:500 21px/1.25 'Poppins',sans-serif;letter-spacing:-.035em;color:var(--text,var(--ink,#f2eff7))}
+.footer-profile p{max-width:420px;margin:0;color:var(--muted);font-size:14px}
+.footer-pages,.footer-social-block{display:flex;flex-direction:column;align-items:flex-start;gap:11px}
+.footer-pages h3,.footer-social-block h3{margin:4px 0 8px;font:700 12px/1.2 'Nunito',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.footer-pages a{font-size:14px;color:var(--text,var(--ink,#f2eff7));transition:color .2s}.footer-pages a:hover{color:#C150F6}
+.footer-socials{display:flex;align-items:center;gap:16px;margin-top:3px}.footer-socials a{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;color:#7532D0;transition:transform .2s,color .2s}.footer-socials a:hover{color:#C150F6;transform:translateY(-2px)}.footer-socials svg{display:block;width:24px;height:24px;fill:currentColor}
+.footer-bottom{border-top:1px solid var(--footer-line)}.footer-bottom-inner{min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:18px;color:var(--muted);font-size:12px}
+body[data-theme=light] .site-footer{--footer-icon-bg:#faf9fb;--footer-line:#e9e5e7;background:#faf9fb;color:#000}body[data-theme=light] .footer-logo{color:#000}
+body[data-theme=light] .footer-profile p,body[data-theme=light] .footer-pages h3,body[data-theme=light] .footer-social-block h3,body[data-theme=light] .footer-bottom-inner{color:#7B6F72}body[data-theme=light] .footer-pages a{color:#29252d}
+@media(max-width:760px){.footer-main{grid-template-columns:1fr 1fr;gap:34px 24px;padding:42px 0 34px}.footer-profile{grid-column:1/-1}.footer-profile h2{margin-top:17px}.footer-pages,.footer-social-block{min-width:0}}
+@media(max-width:520px){.footer-main{grid-template-columns:1fr;gap:28px}.footer-profile{grid-column:auto}.footer-social-block{gap:10px}.footer-bottom-inner{min-height:64px;flex-direction:column;justify-content:center;gap:3px;text-align:center;padding:11px 0}.footer-pages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.footer-pages h3{grid-column:1/-1}}
+</style>
+  <style>.brand{font-size:16px}.nav-cta{gap:8px}.theme-toggle{color:#fff}body[data-theme="light"] .theme-toggle{color:#7532D0}</style>
+<style id="site-section-spacing">
+  main>section:not(.hero):not(.page-hero),main>section#contact.section{padding-top:100px!important;padding-bottom:0!important}
+  @media(max-width:800px){main>section:not(.hero):not(.page-hero),main>section#contact.section{padding-top:40px!important;padding-bottom:0!important}}
+  main>section#services{padding-top:80px!important;padding-bottom:80px!important}
+  @media(max-width:800px){main>section#services{padding-top:30px!important;padding-bottom:30px!important}}
+  main>section#about{padding-bottom:100px!important}
+  @media(max-width:800px){main>section#about{padding-bottom:40px!important}}
+  main>section#contact.section{padding-bottom:80px!important}
+  @media(max-width:800px){main>section#contact.section{padding-bottom:30px!important}}
+</style>
+<style id="mobile-content-buttons">
+  @media(max-width:800px){
+    main .button,main .button-secondary{display:flex!important;width:100%!important;max-width:none!important;min-height:48px!important;box-sizing:border-box;justify-content:center}
+    .section-head{display:flex!important;flex-direction:column!important;align-items:stretch!important}
+    .section-head>.button-secondary{align-self:stretch!important;margin:16px 0 0!important}
+    #about .about-grid>div:first-child>.button-secondary{margin-top:16px!important}
+  }
 </style>
 </head>
 <body>
-  <header class="nav-shell"><div class="wrap nav"><a class="brand" href="#home" aria-label="Taloot Ashfaq home"><span class="brand-full">TALOOT<span> ASHFAQ</span></span><span class="brand-mobile" aria-hidden="true"><span>T</span><span>A</span></span></a><nav class="navlinks" aria-label="Main navigation"><a href="#about">About</a><a href="#work">Portfolio</a><a href="#services">Services</a><a href="#contact">Contact</a></nav><div class="nav-actions"><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/></svg></button><a class="nav-cta" href="#contact">Let's talk <img class="btn-arrow" src="right-arrow.svg" alt=""></a></div></div></header>
+  <header class="nav-shell"><div class="wrap nav"><a class="brand" href="#home" aria-label="Taloot Ashfaq home"><img class="brand-mark" src="Teloot%20logo.svg" alt=""><span class="brand-full">TALOOT<span> ASHFAQ</span></span></a><nav class="navlinks" aria-label="Main navigation"><a href="about.html">About</a><a href="#work">Portfolio</a><a href="#services">Services</a><a href="faq.html">FAQ</a></nav><div class="nav-actions"><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" title="Switch to light mode"><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/></svg></button><a class="nav-cta" href="contact.html">Let's talk <img class="btn-arrow" src="right-arrow.svg" alt=""></a></div></div></header>
   <main>
     <section class="wrap hero" id="home"><div><div class="eyebrow"><i class="dot"></i> Available for select projects</div><h1>Designing clear ideas into <em>digital experiences.</em></h1><p class="lead">Hi, I'm <strong>Taloot Ashfaq</strong> — a UI/UX Designer, Front-end Developer and WordPress Developer. I design and build thoughtful, easy-to-use websites that help people and businesses show up well online.</p><div class="actions"><a class="button" href="#work">Explore my work <img class="btn-arrow" src="right-arrow.svg" alt=""></a><a class="button light" href="#contact">Get in touch <img class="btn-arrow" src="right-arrow.svg" alt=""></a></div></div><div class="portrait"><img class="portrait-photo" src="profile-theme.png" alt="Portrait of Taloot Ashfaq"><div class="placeholder"><div><strong>Your profile photo goes here</strong><small>Replace this box with your portrait</small></div></div><div class="portrait-tag">UI/UX · Front-end · WordPress</div></div></section>
     <div class="wrap skills"><b>What I work with</b><span>UI/UX Design</span><span>Responsive Web</span><span>Front-end Development</span><span>WordPress</span></div>
@@ -118,11 +283,32 @@
       <article class="project"><img class="project-image" src="didpoolfit.webp" alt="DIDPOOLFit fitness mobile app interface designs"><div class="project-meta"><span class="project-category">Fitness Mobile App UI/UX Design</span><div class="project-title-row"><h3>DIDPOOLFit</h3><span class="role">UI/UX Designer</span></div><p>DIDPOOLFit is a fitness app concept designed to support gym members in managing their workouts and fitness routines. I designed the mobile app interface in Figma.</p><div class="tags"><span>Mobile App UI/UX</span><span>Figma</span></div></div></article>
       <article class="project"><img class="project-image" src="mosaic.webp" alt="Mosaic analytics dashboard interface"><div class="project-meta"><span class="project-category">Analytics Dashboard UI Design</span><div class="project-title-row"><h3>Mosaic</h3><span class="role">UI/UX Designer</span></div><p>Mosaic brings key business metrics into one clear dashboard, with sales and revenue charts, traffic sources, top countries, recent activity, income, and expenses. I designed the dashboard interface in Figma.</p><div class="tags"><span>Dashboard UI</span><span>Figma</span></div></div></article>
     </div></section>
-    <section class="section" id="about"><div class="wrap about-grid"><div><div class="kicker">A little about me</div><h2>Good design should feel simple.</h2></div><div class="about-copy"><div class="about-card">I bring design and development together to make websites feel considered, work smoothly, and make a strong first impression.</div><p>I'm a multidisciplinary digital creative working across UI/UX design, front-end development and WordPress. I enjoy taking an idea from an early sketch to a polished, responsive website.</p><p>My approach is collaborative and practical: understand the goal, make the experience clear, and pay attention to the details that make a site easy to use on every screen.</p><h3>My toolkit</h3><div class="skill-pills"><span>UI/UX Design</span><span>Wireframing</span><span>Prototyping</span><span>Front-end Development</span><span>WordPress</span><span>Responsive Design</span></div></div></div></section>
+    <section class="section" id="about"><div class="wrap about-grid"><div><div class="kicker">A little about me</div><h2>Good design should feel simple.</h2></div><div class="about-copy"><div class="about-card">I bring design and development together to make websites feel considered, work smoothly, and make a strong first impression.</div><p>I'm a multidisciplinary digital creative working across UI/UX design, front-end development and WordPress. I enjoy taking an idea from an early sketch to a polished, responsive website.</p><p>My approach is collaborative and practical: understand the goal, make the experience clear, and pay attention to the details that make a site easy to use on every screen.</p><h3>My toolkit</h3><div class="skill-pills"><span>UI/UX Design</span><span>Wireframing</span><span>Prototyping</span><span>Front-end Development</span><span>WordPress</span><span>Responsive Design</span></div><a class="textlink more-link" href="about.html">More about me <img class="btn-arrow" src="right-arrow.svg" alt=""></a></div></div></section>
     <section class="section services" id="services"><div class="wrap"><div class="section-head"><div><div class="kicker">How I can help</div><h2>From first idea to live site.</h2></div><p class="section-intro">Flexible support for businesses and teams that need a thoughtful digital presence.</p></div><div class="service-grid"><article class="service"><span class="service-num">01 / DESIGN</span><h3>UI/UX Design</h3><p>User flows, wireframes and polished interface designs built around real goals and clear journeys.</p></article><article class="service"><span class="service-num">02 / BUILD</span><h3>Front-end Development</h3><p>Responsive, accessible interfaces that bring designs to life across desktop, tablet and mobile.</p></article><article class="service"><span class="service-num">03 / WORDPRESS</span><h3>WordPress Websites</h3><p>Flexible WordPress websites that are easy to manage, update and grow with your business.</p></article></div></div></section>
-    <section class="wrap section" id="contact"><div class="contact"><div><div class="kicker">Have a project in mind?</div><h2>Let’s make it happen.</h2><p>Tell me a little about what you’re building. I’d love to hear from you.</p></div><a class="button" href="mailto:talootashfaq2005@gmail.com">Email me <img class="btn-arrow" src="right-arrow.svg" alt=""></a></div></section>
+    <section class="wrap section home-faq" id="faq"><div class="section-head"><div><div class="kicker">A few things you may be wondering</div><h2>Frequently asked questions.</h2></div><p class="section-intro">A quick introduction to how I work and what I can help with.</p></div><div class="faq-list"><details><summary>What services do you offer?</summary><p>I work across UI/UX design, front-end development and WordPress website development, from early ideas through to a polished, responsive experience.</p></details><details><summary>Can you design and build a website?</summary><p>Yes. I can shape the interface in Figma and build the website with front-end code or WordPress, depending on the project’s needs.</p></details><details><summary>How do we get started?</summary><p>Share a little about your goals, audience and the kind of project you have in mind. I’ll get back to you so we can discuss the right next step.</p></details></div><a class="textlink more-link" href="faq.html">See all FAQs <img class="btn-arrow" src="right-arrow.svg" alt=""></a></section>
+    <section class="wrap section" id="contact"><div class="contact"><div><div class="kicker">Have a project in mind?</div><h2>Let’s make it happen.</h2><p>Tell me a little about what you’re building. I’d love to hear from you.</p></div><a class="button" href="contact.html">Contact me <img class="btn-arrow" src="right-arrow.svg" alt=""></a></div></section>
   </main>
-  <footer class="wrap footer"><span class="copyright">© <span id="year"></span> Taloot Ashfaq. Designed with care.</span><div class="socials" aria-label="Social links"><a href="https://www.behance.net/talootashfaq" target="_blank" rel="noopener noreferrer" aria-label="Behance" title="Behance"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v16H3z"/><path fill="var(--paper)" d="M6 8h4.2c2.1 0 3.3 1 3.3 2.6 0 1-.5 1.7-1.3 2.1 1.2.3 1.9 1.2 1.9 2.5 0 1.9-1.4 2.8-3.7 2.8H6V8zm2.2 1.8v2.2h1.9c.8 0 1.2-.4 1.2-1.1 0-.8-.4-1.1-1.3-1.1H8.2zm0 3.8v2.6h2c.9 0 1.5-.4 1.5-1.3s-.5-1.3-1.5-1.3h-2zM15 8h5v1.5h-5V8zm2.5 2.2c2.2 0 3.5 1.5 3.5 3.8v.6h-5c.1 1 .6 1.5 1.6 1.5.6 0 1.1-.3 1.3-.8h2c-.4 1.7-1.6 2.6-3.4 2.6-2.4 0-3.7-1.5-3.7-3.9 0-2.3 1.4-3.8 3.7-3.8zm-1.5 3h2.9c-.1-.8-.6-1.3-1.4-1.3-.9 0-1.4.5-1.5 1.3z"/></svg></a><a href="https://dribbble.com/talootashfaq" target="_blank" rel="noopener noreferrer" aria-label="Dribbble" title="Dribbble"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M5 6.5c4.6 2.8 8.2 6.4 10.7 12M8 3.2c3.3 3.7 6.2 8.5 8.2 15.2M3 13.2c5.6-2.7 11.6-3.1 17.7-1.8" fill="none" stroke="var(--paper)" stroke-width="1.6"/></svg></a><a href="https://www.linkedin.com/in/taloot" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v18H3z"/><path fill="var(--paper)" d="M6.2 9.3h2.5v8.2H6.2zm1.3-4a1.45 1.45 0 1 1 0 2.9 1.45 1.45 0 0 1 0-2.9zm2.7 4h2.4v1.1h.1c.4-.7 1.2-1.3 2.5-1.3 2.6 0 3.1 1.7 3.1 3.8v4.6h-2.5v-4.1c0-1 0-2.1-1.3-2.1s-1.5 1-1.5 2v4.2h-2.5V9.3z"/></svg></a><a href="https://github.com/talootashfaq" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.9c-2.9.6-3.5-1.2-3.5-1.2-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1.9 2.2 3.4 1.5.1-.7.4-1.2.7-1.5-2.3-.3-4.7-1.2-4.7-5.1 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .9-.3 2.8 1a9.8 9.8 0 0 1 5.1 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.8-4.7 5.1.4.3.7 1 .7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg></a></div></footer>
+  <footer class="site-footer">
+  <div class="wrap footer-main">
+    <div class="footer-profile">
+      <a class="footer-logo" href="index.html" aria-label="Taloot Ashfaq home"><img src="Teloot%20logo.svg" alt=""><span>TALOOT <em>ASHFAQ</em></span></a>
+      <h2>Thoughtful design. Built to work.</h2>
+      <p>I bring UI/UX design, front-end development and WordPress together to create clear, responsive digital experiences.</p>
+    </div>
+    <nav class="footer-pages" aria-label="Footer pages">
+      <h3>Explore</h3><a href="index.html">Home</a><a href="about.html">About</a><a href="portfolio.html">Portfolio</a><a href="services.html">Services</a><a href="faq.html">FAQs</a><a href="contact.html">Contact</a>
+    </nav>
+    <div class="footer-social-block">
+      <h3>Find me online</h3><div class="footer-socials" aria-label="Social links">
+        <a href="https://www.behance.net/talootashfaq" target="_blank" rel="noopener noreferrer" aria-label="Behance" title="Behance"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v16H3z"/><path fill="var(--footer-icon-bg)" d="M6 8h4.2c2.1 0 3.3 1 3.3 2.6 0 1-.5 1.7-1.3 2.1 1.2.3 1.9 1.2 1.9 2.5 0 1.9-1.4 2.8-3.7 2.8H6V8zm2.2 1.8v2.2h1.9c.8 0 1.2-.4 1.2-1.1 0-.8-.4-1.1-1.3-1.1H8.2zm0 3.8v2.6h2c.9 0 1.5-.4 1.5-1.3s-.5-1.3-1.5-1.3h-2zM15 8h5v1.5h-5V8zm2.5 2.2c2.2 0 3.5 1.5 3.5 3.8v.6h-5c.1 1 .6 1.5 1.6 1.5.6 0 1.1-.3 1.3-.8h2c-.4 1.7-1.6 2.6-3.4 2.6-2.4 0-3.7-1.5-3.7-3.9 0-2.3 1.4-3.8 3.7-3.8zm-1.5 3h2.9c-.1-.8-.6-1.3-1.4-1.3-.9 0-1.4.5-1.5 1.3z"/></svg></a>
+        <a href="https://dribbble.com/talootashfaq" target="_blank" rel="noopener noreferrer" aria-label="Dribbble" title="Dribbble"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M5 6.5c4.6 2.8 8.2 6.4 10.7 12M8 3.2c3.3 3.7 6.2 8.5 8.2 15.2M3 13.2c5.6-2.7 11.6-3.1 17.7-1.8" fill="none" stroke="var(--footer-icon-bg)" stroke-width="1.6"/></svg></a>
+        <a href="https://www.linkedin.com/in/taloot" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v18H3z"/><path fill="var(--footer-icon-bg)" d="M6.2 9.3h2.5v8.2H6.2zm1.3-4a1.45 1.45 0 1 1 0 2.9 1.45 1.45 0 0 1 0-2.9zm2.7 4h2.4v1.1h.1c.4-.7 1.2-1.3 2.5-1.3 2.6 0 3.1 1.7 3.1 3.8v4.6h-2.5v-4.1c0-1 0-2.1-1.3-2.1s-1.5 1-1.5 2v4.2h-2.5V9.3z"/></svg></a>
+        <a href="https://github.com/talootashfaq" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.9c-2.9.6-3.5-1.2-3.5-1.2-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1.9 2.2 3.4 1.5.1-.7.4-1.2.7-1.5-2.3-.3-4.7-1.2-4.7-5.1 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .9-.3 2.8 1a9.8 9.8 0 0 1 5.1 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.8-4.7 5.1.4.3.7 1 .7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="wrap footer-bottom-inner"><span>© <span class="year" id="year"></span> Taloot Ashfaq. All rights reserved.</span><span>Designed with care.</span></div></div>
+</footer>
   <script>
     document.getElementById('year').textContent=new Date().getFullYear();
     const themeToggle=document.getElementById('themeToggle');
@@ -131,5 +317,42 @@
     setTheme(localStorage.getItem('portfolio-theme')||'dark');
     themeToggle.addEventListener('click',()=>setTheme(document.body.dataset.theme==='dark'?'light':'dark'));
   </script>
+<script>
+document.querySelectorAll('.nav').forEach((bar,index)=>{
+  const links=bar.querySelector('.navlinks');
+  if(!links)return;
+  links.id=links.id||'mobileMenuLinks'+index;
+  const items=links.querySelectorAll('a');
+  if(items[0])items[0].textContent='About Us';
+  if(items[1])items[1].href='portfolio.html';
+  if(items[2])items[2].href='services.html';
+  if(items[3])items[3].textContent='FAQs';
+  if(!links.querySelector('.nav-mobile-contact')){
+    const contact=document.createElement('a');
+    contact.href='contact.html';contact.className='nav-mobile-contact';contact.textContent='Contact Us';
+    links.appendChild(contact);
+  }
+  const actions=bar.querySelector('.nav-actions');
+  const toggle=document.createElement('button');
+  toggle.type='button';toggle.className='mobile-menu-toggle';toggle.setAttribute('aria-controls',links.id);toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Open menu');
+  const menuIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
+  const closeIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></svg>';
+  toggle.innerHTML=menuIcon;
+  actions.insertBefore(toggle,actions.querySelector('.nav-cta'));
+  const setOpen=open=>{
+    links.classList.toggle('is-open',open);
+    bar.closest('.nav-shell').classList.toggle('menu-open',open);
+    toggle.classList.toggle('is-open',open);
+    document.body.classList.toggle('mobile-menu-open',open);
+    toggle.setAttribute('aria-expanded',String(open));
+    toggle.setAttribute('aria-label',open?'Close menu':'Open menu');
+    toggle.innerHTML=open?closeIcon:menuIcon;
+  };
+  toggle.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();setOpen(toggle.getAttribute('aria-expanded')!=='true')});
+  links.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>setOpen(false)));
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')setOpen(false)});
+  document.addEventListener('click',event=>{if(!bar.contains(event.target))setOpen(false)});
+});
+</script>
 </body>
 </html>
