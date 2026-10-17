@@ -153,6 +153,19 @@ body[data-theme=light] .footer-profile p,body[data-theme=light] .footer-pages h3
   main>section:not(.hero):not(.page-hero),main>section#contact.section{padding-top:100px!important;padding-bottom:0!important}
   @media(max-width:800px){main>section:not(.hero):not(.page-hero),main>section#contact.section{padding-top:40px!important;padding-bottom:0!important}}
 </style>
+<style id="contact-page-spacing">
+  /* Contact hero: remove bottom spacing */
+  main>section.page-hero{padding-bottom:0!important}
+
+  /* Control the gap between the contact form section and footer */
+  main>section.content-section{padding-bottom:80px!important}
+  main>section.content-section+.site-footer{margin-top:0!important}
+
+  @media(max-width:800px){
+    main>section.page-hero{padding-bottom:0!important}
+    main>section.content-section{padding-bottom:30px!important}
+  }
+</style>
 <style id="mobile-content-buttons">
   @media(max-width:800px){main .button,main .button-secondary{display:flex!important;width:100%!important;max-width:none!important;min-height:48px!important;box-sizing:border-box;justify-content:center;margin-inline:0!important}}
 </style>
